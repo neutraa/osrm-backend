@@ -1,3 +1,8 @@
+# 5.5.1
+  - Changes from 5.5.0
+    - Bugfixes
+      - fixed a bug that could lead to emitting false instructions for staying on a roundabout
+
 # 5.5.0
   - Changes from 5.4.0
     - API:
