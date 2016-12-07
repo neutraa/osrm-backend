@@ -66,6 +66,11 @@ std::vector<RouteStep> removeNoTurnInstructions(std::vector<RouteStep> steps);
 OSRM_ATTR_WARN_UNUSED
 std::vector<RouteStep> collapseUseLane(std::vector<RouteStep> steps);
 
+// collapse instructions emitted during a ferry route, since the user likely has
+// no control over a ferry's route by the time they're on it
+OSRM_ATTR_WARN_UNUSED
+std::vector<RouteStep> collapseFerrySteps(std::vector<RouteStep> steps);
+
 // postProcess will break the connection between the leg geometry
 // for which a segment is supposed to represent exactly the coordinates
 // between routing maneuvers and the route steps itself.

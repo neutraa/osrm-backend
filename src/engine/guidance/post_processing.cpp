@@ -1,6 +1,7 @@
-#include "engine/guidance/post_processing.hpp"
 #include "extractor/guidance/constants.hpp"
 #include "extractor/guidance/turn_instruction.hpp"
+#include "extractor/travel_mode.hpp"
+#include "engine/guidance/post_processing.hpp"
 
 #include "engine/guidance/assemble_steps.hpp"
 #include "engine/guidance/lane_processing.hpp"
@@ -1626,6 +1627,23 @@ std::vector<RouteStep> collapseUseLane(std::vector<RouteStep> steps)
                 steps[previous] = elongate(std::move(steps[previous]), steps[step_index]);
                 invalidateStep(steps[step_index]);
             }
+        }
+    }
+    return removeNoTurnInstructions(std::move(steps));
+}
+
+std::vector<RouteStep> collapseFerrySteps(std::vector<RouteStep> steps)
+{
+    // if there are two or more ferry maneuvers announced in a row
+    // collapse the subsequent maneuvers into the first one
+    for (std::size_t step_index = 1; step_index < steps.size(); ++step_index)
+    {
+        const auto previous_index = getPreviousIndex(step_index, steps);
+        const auto &step = steps[step_index];
+        if (compatible(step, steps[previous_index]) && (step.mode == TRAVEL_MODE_FERRY))
+        {
+            steps[previous_index] = elongate(std::move(steps[previous_index]), steps[step_index]);
+            invalidateStep(steps[step_index]);
         }
     }
     return removeNoTurnInstructions(std::move(steps));

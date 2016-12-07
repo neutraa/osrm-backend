@@ -162,6 +162,7 @@ class RouteAPI : public BaseAPI
                 leg.steps = guidance::removeLanesFromRoundabouts(std::move(leg.steps));
                 leg.steps = guidance::anticipateLaneChange(std::move(leg.steps));
                 leg.steps = guidance::collapseUseLane(std::move(leg.steps));
+                leg.steps = guidance::collapseFerrySteps(std::move(leg.steps));
                 leg_geometry = guidance::resyncGeometry(std::move(leg_geometry), leg.steps);
             }
 
