@@ -165,7 +165,7 @@ class FileReader
         {
             // EOF is OK here, everything else, re-throw
             if (!input_stream.eof())
-                throw;
+                throw e;
         }
         return thisline;
     }
